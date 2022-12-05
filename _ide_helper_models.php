@@ -30,6 +30,19 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\IngredientProduct
+ *
+ * @property-read \App\Models\Ingredient|null $ingredient
+ * @property-read \App\Models\Product|null $product
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\IngredientProduct newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\IngredientProduct newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\IngredientProduct query()
+ */
+	class IngredientProduct extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Order
  *
  * @property int $id
@@ -53,6 +66,8 @@ namespace App\Models{
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ingredient[] $ingredients
+ * @property-read int|null $ingredients_count
  * @method static \Database\Factories\ProductFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Product newQuery()
