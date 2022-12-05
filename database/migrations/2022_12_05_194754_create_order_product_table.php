@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\IngredientUnit;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,13 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('ingredients', function (Blueprint $table) {
+        Schema::create('order_product', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('description')->nullable();
-            $table->integer('stock')->default(0);
-            $table->integer('max_stock')->default(0);
-            $table->string('unit')->default(IngredientUnit::Kilograms->value);
+            $table->foreignIdFor(\App\Models\Order::class);
+            $table->foreignIdFor(\App\Models\Product::class);
+            $table->integer('quantity')->default(1);
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ingredients');
+        Schema::dropIfExists('order_product');
     }
 };
