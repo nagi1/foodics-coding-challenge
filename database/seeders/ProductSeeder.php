@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Actions\MakeProductAction;
 
 class ProductSeeder extends Seeder
 {
@@ -22,17 +23,17 @@ class ProductSeeder extends Seeder
             [
                 'ingredient_id' => 1, // Beef
                 'quantity' => 1,
-                'weight' => 0.150, // 150g
+                'weight' => 150,
             ],
             [
                 'ingredient_id' => 2, // Cheese
                 'quantity' => 1,
-                'weight' => 0.030, // 30g
+                'weight' => 30,
             ],
             [
                 'ingredient_id' => 3, // Onion
                 'quantity' => 1,
-                'weight' => 0.020, // 20g
+                'weight' => 20,
             ],
         ]);
     }

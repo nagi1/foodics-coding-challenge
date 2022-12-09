@@ -5,8 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -20,7 +19,8 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->integer('stock')->default(0);
             $table->integer('max_stock')->default(0);
-            $table->string('unit')->default(IngredientUnit::Kilograms->value);
+            $table->string('unit')->default(IngredientUnit::Grams->value);
+            $table->timestamp('bellow_notification_sent_at')->nullable();
             $table->timestamps();
         });
     }

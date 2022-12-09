@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\IngredientUnit;
 use Illuminate\Database\Seeder;
 
 class IngredientSeeder extends Seeder
@@ -18,25 +19,25 @@ class IngredientSeeder extends Seeder
                 'id' => 1,
                 'name' => 'Beef',
                 'description' => 'Cow Beef',
-                'stock' => 20,
-                'max_stock' => 20,
-                'unit' => 'kg',
+                'stock' => 20_000,
+                'max_stock' => 20_000,
+                'unit' => IngredientUnit::Grams->value,
             ],
             [
                 'id' => 2,
                 'name' => 'Cheese',
                 'description' => 'Swizz Cheese',
-                'stock' => 5,
-                'max_stock' => 5,
-                'unit' => 'kg',
+                'stock' => 5000,
+                'max_stock' => 5000,
+                'unit' => IngredientUnit::Grams->value,
             ],
             [
                 'id' => 3,
                 'name' => 'Onion',
                 'description' => 'White Onion',
-                'stock' => 1,
-                'max_stock' => 1,
-                'unit' => 'kg',
+                'stock' => 1000,
+                'max_stock' => 1000,
+                'unit' => IngredientUnit::Grams->value,
             ],
         ];
 
