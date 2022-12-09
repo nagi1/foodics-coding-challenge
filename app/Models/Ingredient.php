@@ -11,8 +11,8 @@ class Ingredient extends Model
 
     protected $guarded = [];
 
-    protected $casts = [
-        'bellow_notification_sent_at' => 'datetime',
+    protected $dates = [
+        'notified_at',
     ];
 
     public function stockBellowPercentageThreshold(int $threshold = 50): bool
@@ -24,15 +24,15 @@ class Ingredient extends Model
         return ($this->stock / $this->max_stock) * 100 < $threshold;
     }
 
-    public function notified(): void
+    public function notify(): void
     {
         $this->fill([
-            'bellow_notification_sent_at' => now(),
+            'notified_at' => now(),
         ])->update();
     }
 
     public function isNotified(): bool
     {
-        return $this->bellow_notification_sent_at !== null;
+        return $this->notified_at !== null;
     }
 }

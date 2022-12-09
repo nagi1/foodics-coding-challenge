@@ -14,7 +14,6 @@ class OrderController extends Controller
 
         if ($order === OrderStatus::NOT_ENOUGH_INGREDIENTS) {
             return response()->json([
-
                 'message' => 'We faced a problem while creating your order, please try again later...',
                 'data' => [],
             ], 422);
@@ -23,8 +22,11 @@ class OrderController extends Controller
         return response()->json([
             'message' => 'Order created successfully',
             'data' => [
-                'order' => $order,
+                'order' => [
+                    'id' => $order->id,
+                    'total_price' => $order->total_price,
+                ],
             ],
-        ]);
+        ], 201);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Actions\CalculateMaxProductQuantityAction;
+use App\Actions\CanMakeProductBasedOnQuantityAction;
 use App\Enums\OrderStatus;
 use App\Events\OrderCreated;
 use App\Models\Order;
@@ -24,6 +24,7 @@ class OrderService
             ->with('ingredients')
             ->whereIn('id', collect($this->productsIdsAndQuantities)->pluck('product_id')->toArray())
             ->get();
+
 
         if (! $this->canMakeEnough()) {
             return OrderStatus::NOT_ENOUGH_INGREDIENTS;
@@ -64,7 +65,7 @@ class OrderService
         return $this->products->filter()->every(function (Product $product) {
             $quantity = Arr::first($this->productsIdsAndQuantities, fn (array $idAndQuantity) => $idAndQuantity['product_id'] === $product->id)['quantity'];
 
-            return app(CalculateMaxProductQuantityAction::class)->execute($product, $quantity) === true;
+            return app(CanMakeProductBasedOnQuantityAction::class)->execute($product, $quantity) === true;
         });
     }
 }

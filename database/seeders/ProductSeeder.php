@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Actions\MakeProductAction;
+use App\Actions\MakeProductUsingIngredientsAction;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -15,7 +15,7 @@ class ProductSeeder extends Seeder
     public function run()
     {
         // Make Burger
-        app(MakeProductAction::class)->execute([
+        app(MakeProductUsingIngredientsAction::class)->execute([
             'name' => 'Burger',
             'description' => 'Beef Burger',
             'price' => 35.99,
