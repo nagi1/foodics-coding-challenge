@@ -12,6 +12,9 @@ class NotifyStockBellowThresholdAction
 {
     public function execute(Collection $ingredients): void
     {
+        // First, we filter the ingredients that are not notified
+        // yet Then, we send the notification to admins, and
+        // mark the ingredients as notified.
         $ingredients
         ->filter(fn (Ingredient $ingredient) => ! $ingredient->isNotified())
         ->each(function (Ingredient $ingredient) {

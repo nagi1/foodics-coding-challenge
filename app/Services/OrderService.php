@@ -37,13 +37,16 @@ class OrderService
             'total_price' => $totalPrice,
         ] + $attributes);
 
-        // attach products to order
+        // After creating the order, we attach the products to it
         collect($this->productsIdsAndQuantities)->each(function (array $idAndQuantity) use (&$order) {
             $order->products()->attach($idAndQuantity['product_id'], [
                 'quantity' => $idAndQuantity['quantity'],
             ]);
         });
 
+        // After the order is created, we fire the OrderCreated event
+        // that will update the ingredient's stock and notify the
+        // admin if the stock is bellow the threshold percentage
         event(new OrderCreated($order));
 
         return $order;
@@ -61,6 +64,9 @@ class OrderService
 
     protected function canMakeEnough(): bool
     {
+        // Check if we can make all the products based on the quantity
+        // every() will return false if one of the products is false
+        // If we can't make one of the products, we return false
         return $this->products->filter()->every(function (Product $product) {
             $quantity = Arr::first($this->productsIdsAndQuantities, fn (array $idAndQuantity) => $idAndQuantity['product_id'] === $product->id)['quantity'];
 
