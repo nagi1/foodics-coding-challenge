@@ -100,6 +100,10 @@ This is a coding challenge for Foodics Senior PHP Developer. The challenge is to
 
 13. Filter out ingredients that have been notified before. and send an email to the admin.
 
+### Scheduled Jobs
+
+-   `ResetNotifiedIngredientWhenGetRefiledJob` will reset the `notified_at` column of the ingredients that have been notified before and the stock is above 50%. This job will run every 5 minutes.
+
 ## Testing
 
 1. Run the tests
