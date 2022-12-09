@@ -30,7 +30,6 @@ class MakeOrderAction
             ]);
         }
 
-
         //  update ingredients quantities
         foreach ($productsIdsAndQuantities as $productIdAndQuantity) {
             $product = $products->find($productIdAndQuantity['product_id']);
@@ -39,7 +38,6 @@ class MakeOrderAction
                 $ingredient->save();
             });
         }
-
 
         return $order;
     }

@@ -7,7 +7,6 @@ enum IngredientUnit: string
     case Grams = 'g';
     case Kilograms = 'kg';
 
-
     // convert to grams
     public function toGrams(int $weight): int
     {

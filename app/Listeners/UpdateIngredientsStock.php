@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
+use App\Actions\NotifyStockBellowThresholdAction;
 use App\Enums\IngredientUnit;
 use App\Events\OrderCreated;
 use App\Models\Ingredient;
 use App\Models\Product;
-use App\Actions\NotifyStockBellowThresholdAction;
 
 class UpdateIngredientsStock
 {
@@ -26,7 +26,6 @@ class UpdateIngredientsStock
                 }
             });
         });
-
 
         if ($bellowThreshold->isNotEmpty()) {
             app(NotifyStockBellowThresholdAction::class)->execute($bellowThreshold);

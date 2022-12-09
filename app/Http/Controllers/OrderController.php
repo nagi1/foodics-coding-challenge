@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\CalculateMaxProductQuantityAction;
-use App\Actions\MakeOrderAction;
-use App\Http\Requests\OrderRequest;
-use App\Models\Product;
-use Arr;
-use App\Services\OrderService;
 use App\Enums\OrderStatus;
+use App\Http\Requests\OrderRequest;
+use App\Services\OrderService;
 
 class OrderController extends Controller
 {
@@ -28,7 +24,7 @@ class OrderController extends Controller
             'message' => 'Order created successfully',
             'data' => [
                 'order' => $order,
-                ]
+            ],
         ]);
     }
 }

@@ -1,13 +1,14 @@
 <?php
+
 namespace App\Services;
 
-use Illuminate\Database\Eloquent\Collection;
-use App\Models\Product;
-use Illuminate\Support\Arr;
 use App\Actions\CalculateMaxProductQuantityAction;
 use App\Enums\OrderStatus;
-use App\Models\Order;
 use App\Events\OrderCreated;
+use App\Models\Order;
+use App\Models\Product;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Arr;
 
 class OrderService
 {

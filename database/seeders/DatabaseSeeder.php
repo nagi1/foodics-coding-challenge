@@ -23,9 +23,9 @@ class DatabaseSeeder extends Seeder
             ->admin()
             ->create(
                 [
-                'name' => 'admin User',
-                'email' => 'admin@example.com',
-            ]
+                    'name' => 'admin User',
+                    'email' => 'admin@example.com',
+                ]
             );
 
         $this->call([

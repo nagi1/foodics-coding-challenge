@@ -21,6 +21,7 @@ class CalculateMaxProductQuantityAction
         $maxQuantity = $product->ingredients->min(function (Ingredient $ingredient) {
             $weightInProduct = IngredientUnit::tryFrom($ingredient->pivot->unit)->toGrams($ingredient->pivot->weight);
             $weightInProduct = $weightInProduct <= 0 ? 1 : $weightInProduct;
+
             return IngredientUnit::tryFrom($ingredient->unit)->toGrams($ingredient->stock) / $weightInProduct;
         });
 

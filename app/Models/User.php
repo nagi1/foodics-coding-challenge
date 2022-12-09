@@ -59,7 +59,6 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-
     public function scopeAdmins(Builder $query)
     {
         return $query->where('role', 'admin');
