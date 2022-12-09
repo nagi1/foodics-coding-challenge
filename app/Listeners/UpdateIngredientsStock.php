@@ -7,11 +7,14 @@ use App\Actions\NotifyStockBellowThresholdAction;
 use App\Events\OrderCreated;
 use App\Models\Ingredient;
 use App\Models\Product;
+use DB;
 
 class UpdateIngredientsStock
 {
     public function handle(OrderCreated $event)
     {
+        DB::beginTransaction();
+
         $order = $event->order->load('products.ingredients');
 
         $bellowThreshold = collect([]);
@@ -32,6 +35,8 @@ class UpdateIngredientsStock
                 }
             });
         });
+
+        DB::commit();
 
         if ($bellowThreshold->isNotEmpty()) {
             app(NotifyStockBellowThresholdAction::class)->execute($bellowThreshold);
