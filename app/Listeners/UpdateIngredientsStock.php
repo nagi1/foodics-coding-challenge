@@ -7,6 +7,7 @@ use App\Enums\IngredientUnit;
 use App\Events\OrderCreated;
 use App\Models\Ingredient;
 use App\Models\Product;
+use App\Actions\CalculateUsedStockAction;
 
 class UpdateIngredientsStock
 {
@@ -18,7 +19,7 @@ class UpdateIngredientsStock
 
         $order->products->each(function (Product $product) use (&$bellowThreshold) {
             $product->ingredients->each(function (Ingredient $ingredient) use ($product, &$bellowThreshold) {
-                $ingredient->stock -= IngredientUnit::tryFrom($ingredient->pivot->unit)->toGrams($ingredient->pivot->weight) * $product->pivot->quantity;
+                $ingredient->stock -= app(CalculateUsedStockAction::class)->execute($ingredient->pivot, $product->pivot->quantity);
                 $ingredient->update();
 
                 if ($ingredient->stockBellowPercentageThreshold(config('app.stock_percentage_threshold', 50))) {
