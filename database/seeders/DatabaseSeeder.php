@@ -19,6 +19,15 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
+        \App\Models\User::factory()
+            ->admin()
+            ->create(
+                [
+                'name' => 'admin User',
+                'email' => 'admin@example.com',
+            ]
+            );
+
         $this->call([
             IngredientSeeder::class,
             ProductSeeder::class,
