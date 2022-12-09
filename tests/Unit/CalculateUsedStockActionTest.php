@@ -1,8 +1,8 @@
 <?php
 
+use App\Actions\CalculateUsedStockAction;
 use App\Models\Ingredient;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Actions\CalculateUsedStockAction;
 
 uses(RefreshDatabase::class);
 
@@ -12,7 +12,6 @@ it('can calculate the used stock in a product based on product quantity', functi
     $onion = Ingredient::factory()->makeOnion(1000)->create();
     $chicken = Ingredient::factory()->makeChicken(5000)->create();
     $tomato = Ingredient::factory()->makeTomato(1000)->create();
-
 
     $chickenSandwitch = makeChickenSandwitch();
     $burger = makeBurger();

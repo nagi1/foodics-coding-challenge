@@ -2,12 +2,11 @@
 
 namespace App\Listeners;
 
+use App\Actions\CalculateUsedStockAction;
 use App\Actions\NotifyStockBellowThresholdAction;
-use App\Enums\IngredientUnit;
 use App\Events\OrderCreated;
 use App\Models\Ingredient;
 use App\Models\Product;
-use App\Actions\CalculateUsedStockAction;
 
 class UpdateIngredientsStock
 {

@@ -11,7 +11,7 @@ class StockBellowThresholdNotification extends Notification implements ShouldQue
 {
     use Queueable;
 
-    public function __construct(string $name, int $stock)
+    public function __construct(protected string $name, protected int $stock)
     {
     }
 
@@ -34,10 +34,13 @@ class StockBellowThresholdNotification extends Notification implements ShouldQue
      */
     public function toMail($notifiable)
     {
+        $threshold = config('app.stock_percentage_threshold', 50);
+
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->subject("{$this->name} is bellow the {$threshold}% threshold")
+                    ->line("The ingredient {$this->name} is bellow the threshold. Current stock: {$this->stock}.")
+                    ->action("Go to the ingredient's page", url('/ingredients'))
+                    ->line('To order more ingredients, please contact the supplier.');
     }
 
     /**

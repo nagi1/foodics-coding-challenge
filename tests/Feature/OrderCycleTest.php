@@ -5,12 +5,10 @@ use App\Events\OrderCreated;
 use App\Models\Ingredient;
 use App\Models\Order;
 use App\Models\User;
+use App\Notifications\StockBellowThresholdNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
-use App\Notifications\StockBellowThresholdNotification;
-
-use function Pest\Laravel\expectsNotification;
 
 uses(RefreshDatabase::class);
 
@@ -83,14 +81,14 @@ test('it returns 201 and order correct response', function () {
 
     expect($response->getStatusCode())->toBe(201);
     expect($response->json())->toBeArray()->toBe([
-                "message" => "Order created successfully",
-                "data" =>  [
-                    "order" =>  [
-                    "id" => 1,
-                    "total_price" => 35.99
-                    ]
-                ]
-        ]);
+        'message' => 'Order created successfully',
+        'data' => [
+            'order' => [
+                'id' => 1,
+                'total_price' => 35.99,
+            ],
+        ],
+    ]);
 });
 
 test('it retruns 422 when one of the ordered item cant be made due to stock', function () {
@@ -250,12 +248,10 @@ test('it updates the stock correctly after the order', function () {
     expect($chicken->fresh()->stock)->toBe(5000 - $usedChicken);
 });
 
-
 test('it sends alearts admins when one of the ingredients goes bellow 50%', function () {
     /**
      * @var TestCase $this
      */
-
     Notification::fake();
 
     $beef = Ingredient::factory()->makeBeef(20_000)->create();
@@ -263,7 +259,6 @@ test('it sends alearts admins when one of the ingredients goes bellow 50%', func
     $onion = Ingredient::factory()->makeOnion(1000)->create();
 
     $burger = makeBurger();
-
 
     $products = [
         [
@@ -298,7 +293,6 @@ test('it sends alearts admins when one of the ingredients goes bellow 50%', func
 
     Notification::assertCount(1);
 
-
     expect($onion->fresh()->isNotified())->toBeTrue();
 });
 
@@ -306,7 +300,6 @@ test('it sends multiple alearts to admins when multiple ingredients goes bellow 
     /**
      * @var TestCase $this
      */
-
     Notification::fake();
 
     $beef = Ingredient::factory()->makeBeef(20_000)->create();
@@ -314,7 +307,6 @@ test('it sends multiple alearts to admins when multiple ingredients goes bellow 
     $onion = Ingredient::factory()->makeOnion(1000)->create();
 
     $burger = makeBurger();
-
 
     $products = [
         [
@@ -357,7 +349,6 @@ test('it sends only one email to admin when ingredients goes bellow 50% across m
     /**
      * @var TestCase $this
      */
-
     Notification::fake();
 
     $beef = Ingredient::factory()->makeBeef(20_000)->create();
@@ -366,15 +357,14 @@ test('it sends only one email to admin when ingredients goes bellow 50% across m
 
     $burger = makeBurger();
 
-
     $products1 = [
-      [
+        [
             'product_id' => $burger->id,
             'quantity' => 30,
         ],
     ];
     $products2 = [
-      [
+        [
             'product_id' => $burger->id,
             'quantity' => 1,
         ],
@@ -406,11 +396,13 @@ test('it sends only one email to admin when ingredients goes bellow 50% across m
     // Expect to notification to be sent to the admin
     Notification::assertSentTo(
         [$admin],
-        StockBellowThresholdNotification::class
+        StockBellowThresholdNotification::class,
+        function (StockBellowThresholdNotification $notification, $channels) use (&$onion, &$admin) {
+            return $notification->toMail($admin)->subject === "{$onion->name} is bellow the 50% threshold";
+        }
     );
 
     Notification::assertCount(1);
-
 
     expect($onion->fresh()->isNotified())->toBeTrue();
 });

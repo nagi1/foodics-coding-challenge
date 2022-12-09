@@ -214,4 +214,14 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Stock Percentage Threshold
+    |--------------------------------------------------------------------------
+    |
+    |   This is the percentage threshold for the stock alert. If the stock
+    |   is less than or equal to this percentage, the user will be alerted.
+    |
+    */
+    'stock_percentage_threshold' => 50,
 ];

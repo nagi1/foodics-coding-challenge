@@ -1,8 +1,9 @@
 <?php
+
 namespace App\Actions;
 
-use App\Models\IngredientProduct;
 use App\Enums\IngredientUnit;
+use App\Models\IngredientProduct;
 
 class CalculateUsedStockAction
 {

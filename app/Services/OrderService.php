@@ -25,7 +25,6 @@ class OrderService
             ->whereIn('id', collect($this->productsIdsAndQuantities)->pluck('product_id')->toArray())
             ->get();
 
-
         if (! $this->canMakeEnough()) {
             return OrderStatus::NOT_ENOUGH_INGREDIENTS;
         }
