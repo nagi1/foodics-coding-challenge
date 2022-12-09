@@ -25,7 +25,7 @@ class OrderRequest extends FormRequest
     {
         return [
             'products' => ['required', 'array'],
-            'products.*.id' => ['required', 'integer', 'exists:products,id'],
+            'products.*.product_id' => ['required', 'integer', 'exists:products,id'],
             'products.*.quantity' => ['required', 'integer', 'min:1'],
         ];
     }

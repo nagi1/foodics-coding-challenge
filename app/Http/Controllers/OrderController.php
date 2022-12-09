@@ -7,30 +7,28 @@ use App\Actions\MakeOrderAction;
 use App\Http\Requests\OrderRequest;
 use App\Models\Product;
 use Arr;
+use App\Services\OrderService;
+use App\Enums\OrderStatus;
 
 class OrderController extends Controller
 {
     public function __invoke(OrderRequest $request)
     {
-        $products = Product::query()
-            ->with('ingredients')
-            ->whereIn('id', Arr::only($request->products, 'product_id'))
-            ->get();
+        $order = app(OrderService::class, ['productsIdsAndQuantities' => $request->products])->createOrder();
 
-        $canMakeEnough = $products->filter()->every(function (Product $product) use (&$request) {
-            $quantity = Arr::first($request->products, fn (array $idAndQuantity) => $idAndQuantity['product_id'] === $product->id)['quantity'];
-
-            return app(CalculateMaxProductQuantityAction::class)->execute($product, $quantity) === true;
-        });
-
-        if (! $canMakeEnough) {
-            // Todo: Send notification to the admin to order more ingredients
+        if ($order === OrderStatus::NOT_ENOUGH_INGREDIENTS) {
             return response()->json([
-                'message' => 'Not enough ingredients to make the product',
+
+                'message' => 'We faced a problem while creating your order, please try again later...',
+                'data' => [],
             ], 422);
         }
 
-        // make order
-        $order = app(MakeOrderAction::class)->execute($products, $request->products);
+        return response()->json([
+            'message' => 'Order created successfully',
+            'data' => [
+                'order' => $order,
+                ]
+        ]);
     }
 }
