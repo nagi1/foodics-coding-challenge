@@ -6,7 +6,7 @@ use App\Enums\IngredientUnit;
 use App\Models\Ingredient;
 use App\Models\Product;
 
-class CalculateMaxProductQuantityAction
+class CanMakeProductBasedOnQuantityAction
 {
     public function execute(Product &$product, int $quantity): bool
     {
@@ -19,10 +19,10 @@ class CalculateMaxProductQuantityAction
         // 20000g / 150g = 133 burgers
         // so we can make 33 burgers
         $maxQuantity = $product->ingredients->min(function (Ingredient $ingredient) {
-            $weightInProduct = IngredientUnit::tryFrom($ingredient->pivot->unit)->toGrams($ingredient->pivot->weight);
+            $weightInProduct = app(CalculateUsedStockAction::class)->execute($ingredient->pivot, 1);
             $weightInProduct = $weightInProduct <= 0 ? 1 : $weightInProduct;
 
-            return IngredientUnit::tryFrom($ingredient->unit)->toGrams($ingredient->stock) / $weightInProduct;
+            return floor(IngredientUnit::tryFrom($ingredient->unit)->toGrams($ingredient->stock) / $weightInProduct);
         });
 
         return $maxQuantity >= $quantity;
