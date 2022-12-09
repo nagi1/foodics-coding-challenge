@@ -11,6 +11,10 @@ class Order extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'total_price' => 'float',
+    ];
+
     public function products()
     {
         return $this->belongsToMany(Product::class, 'order_product')

@@ -17,9 +17,9 @@ class NotifyStockBellowThresholdAction
         ->each(function (Ingredient $ingredient) {
             try {
                 Notification::send(User::admins()->select(['id', 'email', 'role'])->get(), new StockBellowThresholdNotification($ingredient->name, $ingredient->stock));
-                $ingredient->notified();
+                $ingredient->notify();
             } catch (\Exception $e) {
-                // log error'
+                // log error
                 throw $e;
             }
         });
