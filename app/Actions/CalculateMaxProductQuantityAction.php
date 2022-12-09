@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Enums\IngredientUnit;
 use App\Models\Ingredient;
 use App\Models\Product;
 
@@ -9,10 +10,18 @@ class CalculateMaxProductQuantityAction
 {
     public function execute(Product &$product, int $quantity): bool
     {
-        $maxQuantity = $quantity;
-
-        $product->ingredients->each(function (Ingredient $ingredient) use (&$maxQuantity) {
-            $maxQuantity = min($maxQuantity, $ingredient->pivot->quantity / $ingredient->pivot->weight);
+        // Burger has 2 ingredients (Beef and Cheese), so we need to calculate the max quantity
+        // We have 20kg of Beef and 5kg of Cheese, so how many burgers we can make?
+        // to make a burger we need 150g of Beef and 0.030g of Cheese
+        // that we can make with the current ingredients stock
+        // note that we are using the weight of the ingredient in grams
+        // 5000g / 0.030g = 33 burgers
+        // 20000g / 150g = 133 burgers
+        // so we can make 33 burgers
+        $maxQuantity = $product->ingredients->min(function (Ingredient $ingredient) {
+            $weightInProduct = IngredientUnit::tryFrom($ingredient->pivot->unit)->toGrams($ingredient->pivot->weight);
+            $weightInProduct = $weightInProduct <= 0 ? 1 : $weightInProduct;
+            return IngredientUnit::tryFrom($ingredient->unit)->toGrams($ingredient->stock) / $weightInProduct;
         });
 
         return $maxQuantity >= $quantity;
